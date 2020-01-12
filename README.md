@@ -2,6 +2,8 @@
 
 A node module to natively print your files
 
+Updated to reflect img destroying after printing to allow files to be deleted.
+
 ## Requirements
 
 * ### Windows:
