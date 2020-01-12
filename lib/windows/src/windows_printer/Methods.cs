@@ -278,6 +278,8 @@ namespace windows_printer
                         var height = args.PageSettings.PrintableArea.Height;
                         args.Graphics.DrawImage(image, 0, 0, width, height);
                     }
+                    
+                    image.Dispose();
                 };
 
                 pd.QueryPageSettings += delegate (object sender, QueryPageSettingsEventArgs e) {
