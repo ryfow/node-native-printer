@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Printing;
 using System.Web;
+using System.IO;
 
 using PdfiumViewer;
 
@@ -265,13 +266,13 @@ namespace windows_printer
                 pd.PrintPage += delegate (object sender, PrintPageEventArgs args)
                 {
                     //Image image = Image.FromFile(filename);
-                    //FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
-                    //Image image = Image.FromStream(stream);
-                    //stream.Close();
+                    FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+                    Image image = Image.FromStream(stream);
+                    stream.Close();
                     
-                    Image image1 = Image.FromFile(filename);
-                    image.Image = image1;
-                    image1.Dispose();
+                    //Image image1 = Image.FromFile(filename);
+                    //image.Image = image1;
+                    //image1.Dispose();
                     
                     if (landscape)
                     {
