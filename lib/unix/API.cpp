@@ -14,8 +14,8 @@ namespace API{
 
 		for(int i = 0; i < numDests; i++){
 			Local<Object> printer = Object::New(isolate);
-			printer->Set(Nan::Utf8String utf8_value("name"), Nan::Utf8String utf8_value(dests[i].name));
-			printer->Set(Nan::Utf8String utf8_value("default"), Boolean::New(isolate, static_cast<bool>(dests[i].is_default)));
+			printer->Set(std::wstring("name"), std::wstring(dests[i].name));
+			printer->Set(std::wstring("default"), Boolean::New(isolate, static_cast<bool>(dests[i].is_default)));
 			
 			printers->Set(i, printer);
 		}
@@ -50,7 +50,7 @@ namespace API{
 		Local<Object> CUPSOptions = Object::New(isolate);
 
 		for(int i = 0; i < dest->num_options; i++){
-			CUPSOptions->Set(Nan::Utf8String utf8_value(dest->options[i].name), Nan::Utf8String utf8_value(dest->options[i].value));
+			CUPSOptions->Set(std::wstring(dest->options[i].name), std::wstring(dest->options[i].value));
 		}
 
 		char id[5], priority[5], size[5];
@@ -62,16 +62,16 @@ namespace API{
 			sprintf(priority, "%d", printerJobs[i].priority);
 			sprintf(size, "%d", printerJobs[i].size);
 
-			job->Set(Nan::Utf8String utf8_value("completed_time"), Nan::Utf8String utf8_value(httpGetDateString(printerJobs[i].completed_time)));
-			job->Set(Nan::Utf8String utf8_value("creation_time"), Nan::Utf8String utf8_value(httpGetDateString(printerJobs[i].creation_time)));
-			job->Set(Nan::Utf8String utf8_value("format"), Nan::Utf8String utf8_value(printerJobs[i].format));
-			job->Set(Nan::Utf8String utf8_value("id"), Nan::Utf8String utf8_value(id));
-			job->Set(Nan::Utf8String utf8_value("priority"), Nan::Utf8String utf8_value(priority));
-			job->Set(Nan::Utf8String utf8_value("processing_time"), Nan::Utf8String utf8_value(httpGetDateString(printerJobs[i].processing_time)));
-			job->Set(Nan::Utf8String utf8_value("size"), Nan::Utf8String utf8_value(size));
-			job->Set(Nan::Utf8String utf8_value("status"), Nan::Utf8String utf8_value(getJobStatusString(printerJobs[i].state)));
-			job->Set(Nan::Utf8String utf8_value("title"), Nan::Utf8String utf8_value(printerJobs[i].title));
-			job->Set(Nan::Utf8String utf8_value("user"), Nan::Utf8String utf8_value(printerJobs[i].user));
+			job->Set(std::wstring("completed_time"), std::wstring(httpGetDateString(printerJobs[i].completed_time)));
+			job->Set(std::wstring("creation_time"), std::wstring(httpGetDateString(printerJobs[i].creation_time)));
+			job->Set(std::wstring("format"), std::wstring(printerJobs[i].format));
+			job->Set(std::wstring("id"), std::wstring(id));
+			job->Set(std::wstring("priority"), std::wstring(priority));
+			job->Set(std::wstring("processing_time"), std::wstring(httpGetDateString(printerJobs[i].processing_time)));
+			job->Set(std::wstring("size"), std::wstring(size));
+			job->Set(std::wstring("status"), std::wstring(getJobStatusString(printerJobs[i].state)));
+			job->Set(std::wstring("title"), std::wstring(printerJobs[i].title));
+			job->Set(std::wstring("user"), std::wstring(printerJobs[i].user));
 
 			jobs->Set(i, job);
 		}
@@ -79,8 +79,8 @@ namespace API{
 		cupsFreeJobs(num_jobs, printerJobs);
 		free(dest);
 		// result->Set(UTF8_STRING("infos"), infos);
-		result->Set(Nan::Utf8String utf8_value("jobs"), jobs);
-		result->Set(Nan::Utf8String utf8_value("CUPSOptions"), CUPSOptions);
+		result->Set(std::wstring("jobs"), jobs);
+		result->Set(std::wstring("CUPSOptions"), CUPSOptions);
 
 		args.GetReturnValue().Set(result);
 	}
@@ -120,14 +120,14 @@ namespace API{
 			for (int j = 0; j < group->num_options; j++)
 			{
 				Local<Array> choices = Array::New(isolate, option->num_choices);
-				resOptions->Set(Nan::Utf8String utf8_value(option->keyword), choices);
+				resOptions->Set(std::wstring(option->keyword), choices);
 				ppd_choice_t* choice = option->choices;
 				
 				for(int h = 0; h < option->num_choices; h++){
-					choices->Set(h, Nan::Utf8String utf8_value(choice->text));
+					choices->Set(h, std::wstring(choice->text));
 					
 					if(choice->marked)
-						resDefaults->Set(Nan::Utf8String utf8_value(option->keyword), Nan::Utf8String utf8_value(choice->text));
+						resDefaults->Set(std::wstring(option->keyword), std::wstring(choice->text));
 
 					choice++;
 				}
@@ -141,8 +141,8 @@ namespace API{
 		ppdClose(ppd);
 		free(dest);
 		
-		result->Set(Nan::Utf8String utf8_value("options"), resOptions);
-		result->Set(Nan::Utf8String utf8_value("defaultOptions"), resDefaults);
+		result->Set(std::wstring("options"), resOptions);
+		result->Set(std::wstring("defaultOptions"), resDefaults);
 		args.GetReturnValue().Set(result);
 	}
 
@@ -151,7 +151,7 @@ namespace API{
 		ISOLATE;
 		
 		cups_dest_t* printer = getPrinter(NULL);
-		args.GetReturnValue().Set(Nan::Utf8String utf8_value(strdup(printer->name)));
+		args.GetReturnValue().Set(std::wstring(strdup(printer->name)));
 		free(printer);
 	}
 
@@ -175,7 +175,7 @@ namespace API{
 
 		string result = exec(cmd.c_str());
 		
-		args.GetReturnValue().Set(Nan::Utf8String utf8_value(result.c_str()));
+		args.GetReturnValue().Set(std::wstring(result.c_str()));
 		free(dest);
 	}
 }
