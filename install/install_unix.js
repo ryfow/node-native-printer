@@ -22,6 +22,9 @@ module.exports = function(){
 	}
 
 	cmd = spawnSync('npm', ['run', 'build']);
+	if(output = cmd.stderr.toString('utf-8')){
+		console.log(output);
+	}
 	
 
 	console.log(cmd.stdout.toString('utf-8'));
