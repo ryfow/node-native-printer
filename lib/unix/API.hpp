@@ -6,18 +6,19 @@ using namespace v8;
 
 #define CALLBACK(name) 			void name(const FunctionCallbackInfo<Value>& args)
 #define ISOLATE 				v8::Isolate* isolate = v8::Isolate::GetCurrent()
-#define THROW_EXCEPTION(msg) 	isolate->ThrowException(v8::Exception::TypeError(String::NewFromUtf8(isolate, msg)))
+#define THROW_EXCEPTION(msg) 	isolate->ThrowException(v8::Exception::TypeError(String::NewFromUtf8(isolate, msg).ToLocalChecked()))
+
 #define UTF8_STRING(str) 		String::NewFromUtf8(isolate, str)
 
 
 //Method declarations
-namespace API{	
+namespace API{
 	/**
 	 * List installed printers
-	 * @return array of printers 
+	 * @return array of printers
 	 */
 	CALLBACK(listPrinters);
-	
+
 	/**
 	 * Returns printer infos with active jobs
 	 * @param printer printer name; if it's null it'll be used default printer name
@@ -31,7 +32,7 @@ namespace API{
 	 * @return object containing options
 	 */
 	CALLBACK(printerOptions);
-	
+
 	/**
 	 * Returns default printer name
 	 */

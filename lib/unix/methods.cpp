@@ -9,10 +9,10 @@ namespace methods{
 		int num_dests = cupsGetDests(&dests);
 
 		cups_dest_t* temp;
-		
+
 		if(printer != NULL){
-			string printerName = strtolower(string(printer)); 
-			
+			string printerName = strtolower(string(printer));
+
 			if(strlen(printer) > 0 && printerName.compare("null") != 0 && printerName.compare("undefined") != 0){
 				temp = cupsGetDest(printer, NULL, num_dests, dests);
 			}
@@ -20,7 +20,7 @@ namespace methods{
 				temp = cupsGetDest(cupsGetDefault(), NULL, num_dests, dests);
 		}
 		else
-			temp = cupsGetDest(cupsGetDefault(), NULL, num_dests, dests);			
+			temp = cupsGetDest(cupsGetDefault(), NULL, num_dests, dests);
 
 		cups_dest_t* result = new cups_dest_t;
 		if(temp != NULL){
@@ -51,12 +51,12 @@ namespace methods{
 			if(dest->name == NULL)
 				return false;
 		}
-		
+
 		dest->is_default = source->is_default;
 		dest->num_options = source->num_options;
 
 		dest->options = new cups_option_t[source->num_options];
-		
+
 		if(! copyOptions(source->options, source->num_options, dest->options)){
 			cerr << "Errore durante la copia delle opzioni\n";
 			return 1;
@@ -70,13 +70,13 @@ namespace methods{
 		for(int i = 0; i < num; i++){
 			dest[i].name = strdup(source[i].name);
 			dest[i].value = strdup(source[i].value);
-			
+
 			if(dest[i].name == NULL)
 				return false;
 			if(dest[i].value == NULL)
 				return false;
 		}
-		
+
 		return true;
 	}
 
@@ -112,7 +112,7 @@ namespace methods{
 		char buffer[128];
 		std::string result = "";
 		FILE* pipe = popen(cmd, "r");
-		if (!pipe){ 
+		if (!pipe){
 			result = "popen() failed!";
 			return result;
 		}
@@ -125,21 +125,15 @@ namespace methods{
 			pclose(pipe);
 			throw;
 		}
-		
+
 		pclose(pipe);
-		
+
 		return result;
 	}
 
 	string strtolower(string data){
 		transform(data.begin(), data.end(), data.begin(), ::tolower);
 		return data;
-	}
-	
-	const char* strtolower(char* str){
-		string data(str);
-		transform(data.begin(), data.end(), data.begin(), ::tolower);
-		return data.c_str();
 	}
 
 }
