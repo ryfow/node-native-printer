@@ -10,11 +10,6 @@ module.exports = function(){
 		cmd = spawnSync('dpkg', ['-l']);
 		output = cmd.stdout.toString('utf-8');
 		
-		if(cmd.stderr.toString('utf-8')){
-			console.log("Error: ");
-			console.log(cmd.stderr.toString('utf-8'));
-			process.exit(1);
-		}
 
 		if(output.includes('libcups2-dev')){
 			console.log('libcups2-dev found!');
@@ -27,11 +22,10 @@ module.exports = function(){
 	}
 
 	cmd = spawnSync('npm', ['run', 'build']);
-	
 	if(output = cmd.stderr.toString('utf-8')){
 		console.log(output);
-		process.exit(1);
 	}
+	
 
 	console.log(cmd.stdout.toString('utf-8'));
 };

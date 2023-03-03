@@ -1,4 +1,5 @@
 #include "API.hpp"
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 using namespace methods;
 
@@ -26,11 +27,11 @@ namespace API{
       //v8::MaybeLocal<v8::String> temp2 = String::NewFromUtf8(isolate, dests[i].name);
       //temp2.ToLocal(&result2);
 
-			Maybe<bool> f = printer->Set(ctx, v8::String::NewFromUtf8(isolate, "name").ToLocalChecked(), v8::String::NewFromUtf8(isolate, dests[i].name).ToLocalChecked());
+			printer->Set(ctx, v8::String::NewFromUtf8(isolate, "name").ToLocalChecked(), v8::String::NewFromUtf8(isolate, dests[i].name).ToLocalChecked()).Check();
 
-			Maybe<bool> g = printer->Set(ctx, v8::String::NewFromUtf8(isolate, "name").ToLocalChecked(), Boolean::New(isolate, static_cast<bool>(dests[i].is_default)));
+			printer->Set(ctx, v8::String::NewFromUtf8(isolate, "name").ToLocalChecked(), Boolean::New(isolate, static_cast<bool>(dests[i].is_default))).Check();
 
-			Maybe<bool> h = printers->Set(ctx, i, printer);
+			printers->Set(ctx, i, printer).Check();
 		}
 
 		cupsFreeDests(numDests, dests);
@@ -63,7 +64,7 @@ namespace API{
 		Local<Object> CUPSOptions = Object::New(isolate);
 
 		for(int i = 0; i < dest->num_options; i++){
-			CUPSOptions->Set(isolate->GetCurrentContext(), v8_str(isolate, dest->options[i].name), v8_str(isolate, dest->options[i].value));
+			CUPSOptions->Set(isolate->GetCurrentContext(), v8_str(isolate, dest->options[i].name), v8_str(isolate, dest->options[i].value)).Check();
 		}
 
 		char id[5], priority[5], size[5];
@@ -75,25 +76,25 @@ namespace API{
 			sprintf(priority, "%d", printerJobs[i].priority);
 			sprintf(size, "%d", printerJobs[i].size);
 
-			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "completed_time"), v8_str(isolate, httpGetDateString(printerJobs[i].completed_time)));
-			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "creation_time"), v8_str(isolate, httpGetDateString(printerJobs[i].creation_time)));
-			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "format"), v8_str(isolate, printerJobs[i].format));
-			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "id"), v8_str(isolate, id));
-			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "priority"), v8_str(isolate, priority));
-			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "processing_time"), v8_str(isolate, httpGetDateString(printerJobs[i].processing_time)));
-			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "size"), v8_str(isolate, size));
-			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "status"), v8_str(isolate, getJobStatusString(printerJobs[i].state)));
-			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "title"), v8_str(isolate, printerJobs[i].title));
-			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "user"), v8_str(isolate, printerJobs[i].user));
+			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "completed_time"), v8_str(isolate, httpGetDateString(printerJobs[i].completed_time))).Check();
+			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "creation_time"), v8_str(isolate, httpGetDateString(printerJobs[i].creation_time))).Check();
+			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "format"), v8_str(isolate, printerJobs[i].format)).Check();
+			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "id"), v8_str(isolate, id)).Check();
+			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "priority"), v8_str(isolate, priority)).Check();
+			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "processing_time"), v8_str(isolate, httpGetDateString(printerJobs[i].processing_time))).Check();
+			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "size"), v8_str(isolate, size)).Check();
+			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "status"), v8_str(isolate, getJobStatusString(printerJobs[i].state))).Check();
+			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "title"), v8_str(isolate, printerJobs[i].title)).Check();
+			job->Set(isolate->GetCurrentContext(), v8_str(isolate, "user"), v8_str(isolate, printerJobs[i].user)).Check();
 
-			jobs->Set(isolate->GetCurrentContext(), i, job);
+			jobs->Set(isolate->GetCurrentContext(), i, job).Check();
 		}
 
 		cupsFreeJobs(num_jobs, printerJobs);
 		free(dest);
 		// result->Set(UTF8_STRING("infos"), infos);
-		result->Set(isolate->GetCurrentContext(), v8_str(isolate, "jobs"), jobs);
-		result->Set(isolate->GetCurrentContext(), v8_str(isolate, "CUPSOptions"), CUPSOptions);
+		result->Set(isolate->GetCurrentContext(), v8_str(isolate, "jobs"), jobs).Check();
+		result->Set(isolate->GetCurrentContext(), v8_str(isolate, "CUPSOptions"), CUPSOptions).Check();
 
 		args.GetReturnValue().Set(result);
 	}
@@ -133,14 +134,14 @@ namespace API{
 			for (int j = 0; j < group->num_options; j++)
 			{
 				Local<Array> choices = Array::New(isolate, option->num_choices);
-				resOptions->Set(isolate->GetCurrentContext(), v8_str(isolate, option->keyword), choices);
+				resOptions->Set(isolate->GetCurrentContext(), v8_str(isolate, option->keyword), choices).Check();
 				ppd_choice_t* choice = option->choices;
 
 				for(int h = 0; h < option->num_choices; h++){
-					choices->Set(isolate->GetCurrentContext(), h, v8_str(isolate, choice->text));
+					choices->Set(isolate->GetCurrentContext(), h, v8_str(isolate, choice->text)).Check();
 
 					if(choice->marked)
-						resDefaults->Set(isolate->GetCurrentContext(), v8_str(isolate, option->keyword), v8_str(isolate, choice->text));
+						resDefaults->Set(isolate->GetCurrentContext(), v8_str(isolate, option->keyword), v8_str(isolate, choice->text)).Check();
 
 					choice++;
 				}
@@ -154,8 +155,8 @@ namespace API{
 		ppdClose(ppd);
 		free(dest);
 
-		result->Set(isolate->GetCurrentContext(), v8_str(isolate, "options"), resOptions);
-		result->Set(isolate->GetCurrentContext(), v8_str(isolate, "defaultOptions"), resDefaults);
+		result->Set(isolate->GetCurrentContext(), v8_str(isolate, "options"), resOptions).Check();
+		result->Set(isolate->GetCurrentContext(), v8_str(isolate, "defaultOptions"), resDefaults).Check();
 		args.GetReturnValue().Set(result);
 	}
 
