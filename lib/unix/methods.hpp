@@ -33,7 +33,7 @@ namespace methods{
 	 * @param src cups_option_t* from which to copy informations
 	 * @param num_options number of options to copy starting from the first
 	 * @param dest cups_option_t* in which to copy informations
-	 * @return copy of src 
+	 * @return copy of src
 	 */
 	bool copyOptions(cups_option_t*, int, cups_option_t*);
 
@@ -58,11 +58,6 @@ namespace methods{
 	 */
 	string strtolower(string);
 
-	/**
-	 * Transform a char* to lowercase
-	 * @param data char* to transform
-	 * @return char* string lowercased
-	 */
-	const char* strtolower(char*);
+
 }
 
