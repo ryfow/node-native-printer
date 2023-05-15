@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 
 module.exports = function(){
 
-	var args = JSON.parse(process.env.npm_config_argv).original;
+	var args = process.env.npm_config_argv ? JSON.parse(process.env.npm_config_argv).original : [];
 	var test = new RegExp('^-.*$', 'g');
 
 	var flags = args.filter(function(value) {
