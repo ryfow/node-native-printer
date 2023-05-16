@@ -4,7 +4,7 @@ const os = require('os');
 
 dotenv.config({path: fs.realpathSync(__dirname + '/../.env')});
 
-const edge = require(`../../${process.env.NNP_PACKAGE}`);
+const edge = require('electron-edge-js');
 const dllPath = fs.realpathSync(__dirname + '/../lib/windows/windows_printer.dll').replace('.asar', '.asar.unpacked');
 
 module.exports = class WinPrinter{
