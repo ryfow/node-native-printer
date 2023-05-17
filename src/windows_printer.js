@@ -1,8 +1,5 @@
-const dotenv = require('dotenv');
 const fs = require('fs');
 const os = require('os');
-
-dotenv.config({path: fs.realpathSync(__dirname + '/../.env')});
 
 const edge = require('electron-edge-js');
 const dllPath = fs.realpathSync(__dirname + '/../lib/windows/windows_printer.dll').replace('.asar', '.asar.unpacked');
